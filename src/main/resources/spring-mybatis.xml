@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+        xsi:schemaLocation="
+
+	  http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+
+	  http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.0.xsd
+
+	  http://www.springframework.org/schema/aop
+	  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+
+	  http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+
+      " >
+    <context:component-scan base-package="cn.ssm"/>
+
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties" />
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${driver}"></property>
+        <property name="jdbcUrl" value="${url}"></property>
+        <property name="user" value="${user}"></property>
+        <property name="password" value="${password}"></property>
+        <property name="initialPoolSize" value="${initialPoolSize}"></property>
+        <property name="maxPoolSize" value="${maxPoolSize}"></property>
+        <property name="maxIdleTime" value="${maxIdleTime}"></property>
+    </bean>
+
+    <!--spring和Mybatis整合-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="prototype">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:mybatis.xml"></property>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入SqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描的Dao接口-->
+        <property name="basePackage" value="cn.ssm.dao"/>
+    </bean>
+
+
+    <bean id="phoneSendUtil" class="cn.ssm.utils.PhoneSendUtil">
+        <property name="AccountSid" value="8a216da85f5c89b1015f5de4bb9c0103"></property>
+        <property name="AccountToken" value="67cbba5bd8544796806b730c88922308"></property>
+        <property name="AppId" value="8a216da85f5c89b1015f5de4bbf20109"></property>
+    </bean>
+
+    <bean id="emailSendUtil" class="cn.ssm.utils.EmailSendUtil">
+        <property name="apiKey" value="rGTdOugLLySklDhy"></property>
+        <property name="apiUser" value="SevnCy_test_6zeJnO"></property>
+    </bean>
+
+    <bean id="qiniuHeardUpload" class="cn.ssm.utils.QiniuHeardUpload">
+        <property name="ak" value="gFcM7MEUWdTkGXI0Hu1vbyyerdjdchel3PsLivw1"></property>
+        <property name="sk" value="IShcmwKDHIxbo-1_L1eQ_bMO0QLFjm5OQYDVtmHG"></property>
+        <property name="bk" value="task7"></property>
+    </bean>
+
+    <bean id="aliyunHeardUpload" class="cn.ssm.utils.AliyunHeardUpload">
+        <property name="ak" value="LTAIh5l424eW7QVF"></property>
+        <property name="sk" value="GHhtm8LYK8d5UML0c9Zjm89CSQjSxj"></property>
+        <property name="bk" value="task7"></property>
+    </bean>
+
+
+    <bean id="heardUpload" class="cn.ssm.utils.HeardUpload">
+        <property name="ak" value="LTAIh5l424eW7QVF"></property>
+        <property name="sk" value="GHhtm8LYK8d5UML0c9Zjm89CSQjSxj"></property>
+        <property name="bk" value="task7"></property>
+        <!--当数字为1时使用七牛,数字为2时使用阿里云,上方属性值对应其进行设置!-->
+        <property name="numb" value="2"></property>
+    </bean>
+
+
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+
+
+
+</beans>
+
+
+
+
+
+
+
+
+

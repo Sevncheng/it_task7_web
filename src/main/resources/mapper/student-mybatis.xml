@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ssm.dao.StudentDao">
+
+
+
+    <insert id="add"  parameterType="cn.ssm.entity.Student">
+        insert into student(studentId,studentName,studentPassword,studentPhone,studentHead,studentState)
+        values(#{studentId},#{studentName},#{studentPassword},#{studentPhone},#{studentHead},#{studentState}) ;
+    </insert>
+
+    <update id="update" parameterType="cn.ssm.entity.Student">
+         update student set studentName=#{studentName}, studentPassword=#{studentPassword}
+          where studentId=#{studentId};
+    </update>
+
+    <update id="updateHead" parameterType="cn.ssm.entity.Student">
+        update student set studentHead=#{studentHead}
+        where studentId=#{studentId};
+    </update>
+
+
+    <update id="updateEmail" parameterType="cn.ssm.entity.Student">
+        update student set studentEmail=#{studentEmail},studentState="1"
+        where studentId=#{studentId};
+    </update>
+
+
+    <select id="findAll" resultType="cn.ssm.entity.Student">
+          select  studentId,studentName,studentPhone,studentEmail,studentHead,studentState
+          from student ;
+    </select>
+
+    <select id="findById" parameterType="String" resultType="cn.ssm.entity.Student">
+        select  studentId,studentPassword,studentName,studentPhone,studentEmail,studentHead,studentState
+        from student where studentId=#{studentId}
+    </select>
+
+    <select id="findByStudent" parameterType="cn.ssm.entity.Student" resultType="cn.ssm.entity.Student">
+        select studentId,studentName,studentPassword,studentPhone,studentEmail,studentHead,studentState
+        from student where studentName=#{studentName} and studentPassword=#{studentPassword} ;
+    </select>
+
+</mapper>

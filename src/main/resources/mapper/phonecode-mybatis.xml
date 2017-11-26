@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ssm.dao.PhoneCodeDao">
+
+    <insert id="save" parameterType="cn.ssm.entity.PhoneCode">
+        insert into phonecode(codeTime,codeNumber,codePhone) values(#{codeTime},#{codeNumber},#{codePhone})
+    </insert>
+
+    <select id="checkCode"  parameterType="cn.ssm.entity.PhoneCode" resultType="cn.ssm.entity.PhoneCode">
+        select codeTime,codePhone,codeNumber from phonecode where codeNumber=#{codeNumber} and codePhone=#{codePhone}
+    </select>
+
+    <select id="count"  parameterType="cn.ssm.entity.PhoneCode" resultType="int" >
+        select count(*) from phonecode
+         where codePhone=#{codePhone} and  (codeTime between #{codeTime}-(1000*60*5) and #{codeTime}) ;
+    </select>
+
+</mapper>
